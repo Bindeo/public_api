@@ -1,2 +1,2 @@
 # public_api
-Public Bindeo api
+Bindeo public api
