@@ -8,3 +8,8 @@ $settings['settings']['mysql'] = [
     'pass'   => 'dd9b15947a493f7ce7067a41f8a3edd1',
     'scheme' => 'API'
 ];
+
+$settings['settings']['api'] = [
+    'url'   => 'ivelasco.private.bindeo.com',
+    'token' => '3f154e8e946347b610dab4311560fce3'
+];
