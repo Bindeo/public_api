@@ -10,18 +10,18 @@ return [
             'path' => __DIR__ . '/../var/logs/app.log',
         ],
 
-        // MySQL
-        'mysql'               => [
-            'host'   => 'mysql.bindeo.com',
-            'user'   => 'API',
-            'pass'   => 'a1607b03e86453ebaf35bec81b4194ae',
-            'scheme' => 'API'
+        // OAuth keys
+        'oauth'               => [
+            'keys' => [
+                'private' => '/var/www/keys/api.key',
+                'public'  => '/var/www/keys/api'
+            ]
         ],
 
         // Private API
         'api'                 => [
             'url'   => 'private.bindeo.com',
-            'token' => '5f20ba1d9f033c18e8c930e2f82678a1'
+            'token' => 'd5f14b4a435a5ef685bbaedbdd49de9fa7bd728344451113b15e9b0fd29e183a'
         ]
     ]
 ];

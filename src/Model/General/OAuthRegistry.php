@@ -3,15 +3,30 @@
 namespace PublicApi\Model\General;
 
 /**
- * Store general data
+ * Store OAuth data
  */
 class OAuthRegistry
 {
+    const GRANT_NONE        = 'no_auth';
+    const GRANT_CREDENTIALS = 'client_credentials';
+    const GRANT_AUTH_CODE   = 'authorization_code';
+
+    const CLIENT_ROLE_FULL     = 'full';
+    const CLIENT_ROLE_EXTERNAL = 'external';
+    const CLIENT_ROLE_SANDBOX  = 'sandbox';
+
+    const ROLE_ANONYMOUS = 0;
+    const ROLE_ADMIN     = 1;
+    const ROLE_USER      = 2;
+    const ROLE_VIP       = 3;
+
     protected static $me;
+    protected        $token;
     protected        $grantType;
     protected        $clientId;
-    protected        $appName;
-    protected        $appRole;
+    protected        $clientRole;
+    protected        $userRole;
+    protected        $user;
 
     /**
      * Singleton constructor
@@ -35,6 +50,26 @@ class OAuthRegistry
     public function __clone() { }
 
     public function __wakeup() { }
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     *
+     * @return OAuthRegistry
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -79,19 +114,19 @@ class OAuthRegistry
     /**
      * @return mixed
      */
-    public function getAppName()
+    public function getClientRole()
     {
-        return $this->appName;
+        return $this->clientRole;
     }
 
     /**
-     * @param mixed $appName
+     * @param mixed $clientRole
      *
      * @return OAuthRegistry
      */
-    public function setAppName($appName)
+    public function setClientRole($clientRole)
     {
-        $this->appName = $appName;
+        $this->clientRole = $clientRole;
 
         return $this;
     }
@@ -99,19 +134,39 @@ class OAuthRegistry
     /**
      * @return mixed
      */
-    public function getAppRole()
+    public function getUserRole()
     {
-        return $this->appRole;
+        return $this->userRole;
     }
 
     /**
-     * @param mixed $appRole
+     * @param mixed $userRole
      *
      * @return OAuthRegistry
      */
-    public function setAppRole($appRole)
+    public function setUserRole($userRole)
     {
-        $this->appRole = $appRole;
+        $this->userRole = $userRole;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     *
+     * @return OAuthRegistry
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

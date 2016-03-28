@@ -50,6 +50,28 @@ class ResultSet extends ClientResultSetAbstract
                 $object = new MediaType((array)$data->attributes);
                 $res = [$object->getIdType(), $object];
                 break;
+            case 'users':
+                // Fill the entity class
+                if (!$this->entity) {
+                    $this->entity = 'PublicApi\Entity\User';
+                } elseif ($this->entity != 'PublicApi\Entity\User') {
+                    throw new \Exception(500);
+                }
+
+                $object = new User((array)$data->attributes);
+                $res = [$object->getIdUser(), $object];
+                break;
+            case 'oauth_clients':
+                // Fill the entity class
+                if (!$this->entity) {
+                    $this->entity = 'PublicApi\Entity\OAuthClient';
+                } elseif ($this->entity != 'PublicApi\Entity\OAuthClient') {
+                    throw new \Exception(500);
+                }
+
+                $object = new OAuthClient((array)$data->attributes);
+                $res = [$object->getIdClient(), $object];
+                break;
             default:
                 throw new \Exception(500);
         }

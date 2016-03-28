@@ -14,6 +14,9 @@
         "ext-pdo": "*",
         "slim/slim": "^3.0",
         "monolog/monolog": "^1.0",
-        "php-curl-class/php-curl-class": "~4.0"
+        "php-curl-class/php-curl-class": "~4.0",
+        "mdanter/ecc": "^0.3.0",
+        "league/oauth2-server": "5.0.0-RC1",
+        "akrabat/rka-ip-address-middleware": "^0.4.0"
     }
 }
