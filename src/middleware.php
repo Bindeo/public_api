@@ -1,13 +1,16 @@
 <?php
 // Application middleware
-// OAuth
+// OAuth2
 if ($app->getContainer()->request->getUri()->getPath() != '/access_token') {
+    // Save OAuth data in registry
+    $app->add(new PublicApi\Middleware\OAuth());
+    // Check OAuth authorization
     $app->add('PublicApi\Middleware\OAuth');
 }
 
-// Save current ip in session
+// Save current ip in OAuthRegistry
 $app->add(function ($request, $response, $next) use ($app) {
-    $_SESSION['ip_address'] = $request->getAttribute('ip_address');
+    \PublicApi\Model\OAuth\OAuthRegistry::getInstance()->setIp($request->getAttribute('ip_address'));
     return $next($request, $response);
 });
 

@@ -1,15 +1,14 @@
 <?php
 
-namespace PublicApi\Model\General;
+namespace PublicApi\Model\OAuth;
 
 /**
  * Store OAuth data
  */
 class OAuthRegistry
 {
-    const GRANT_NONE        = 'no_auth';
     const GRANT_CREDENTIALS = 'client_credentials';
-    const GRANT_AUTH_CODE   = 'authorization_code';
+    const GRANT_PASSWORD    = 'password';
 
     const CLIENT_ROLE_FULL     = 'full';
     const CLIENT_ROLE_EXTERNAL = 'external';
@@ -26,7 +25,8 @@ class OAuthRegistry
     protected        $clientId;
     protected        $clientRole;
     protected        $userRole;
-    protected        $user;
+    protected        $userId;
+    protected        $ip;
 
     /**
      * Singleton constructor
@@ -46,7 +46,7 @@ class OAuthRegistry
         return self::$me;
     }
 
-    // Impedimos que los objetos de esta clase puedan ser clonados o deserializados, para asegurar el singleton
+    // We prevent that objects of this class can be cloned or deserialized to ensure the singleton pattern
     public function __clone() { }
 
     public function __wakeup() { }
@@ -154,19 +154,39 @@ class OAuthRegistry
     /**
      * @return mixed
      */
-    public function getUser()
+    public function getUserId()
     {
-        return $this->user;
+        return $this->userId;
     }
 
     /**
-     * @param mixed $user
+     * @param mixed $userId
+     *
+*@return OAuthRegistry
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @param mixed $ip
      *
      * @return OAuthRegistry
      */
-    public function setUser($user)
+    public function setIp($ip)
     {
-        $this->user = $user;
+        $this->ip = $ip;
 
         return $this;
     }

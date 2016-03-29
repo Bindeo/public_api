@@ -49,6 +49,10 @@ class Server
         // Enable the client credentials grant on the server with a token TTL of 1 hour
         $server->enableGrantType(new \League\OAuth2\Server\Grant\ClientCredentialsGrant(), new \DateInterval('PT1H'));
 
+        // Enable the refresh token grant on the server with a token TTL of 1 hour
+        $server->enableGrantType(new \League\OAuth2\Server\Grant\RefreshTokenGrant($this->refreshRepository),
+            new \DateInterval('PT1H'));
+
         return $server;
     }
 }

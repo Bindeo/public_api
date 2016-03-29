@@ -32,7 +32,7 @@ class ClientRepository implements ClientRepositoryInterface
             return null;
         } else {
             $client = $res->getRows()[0];
-            $client->setIdentifier($client->getName());
+            $client->setIdentifier($client->getIdClient());
             return $client;
         }
     }

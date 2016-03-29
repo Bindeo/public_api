@@ -72,6 +72,17 @@ class ResultSet extends ClientResultSetAbstract
                 $object = new OAuthClient((array)$data->attributes);
                 $res = [$object->getIdClient(), $object];
                 break;
+            case 'oauth_tokens':
+                // Fill the entity class
+                if (!$this->entity) {
+                    $this->entity = 'PublicApi\Entity\OAuthToken';
+                } elseif ($this->entity != 'PublicApi\Entity\OAuthToken') {
+                    throw new \Exception(500);
+                }
+
+                $object = new OAuthToken((array)$data->attributes);
+                $res = [$object->getToken(), $object];
+                break;
             default:
                 throw new \Exception(500);
         }

@@ -33,12 +33,14 @@ class UserRepository implements UserRepositoryInterface
         ClientEntityInterface $clientEntity
     ) {
         // Login user against private API
-        $res = $this->api->getJson('account', ['email' => $username, 'password' => $password, 'ip' => $_SESSION['ip_address']]);
+        $res = $this->api->getJson('account',
+            ['email' => $username, 'password' => $password, 'ip' => OAuthRegistry::getInstance()->getIp()]);
         if ($res->getError() or !$res->getNumRows() == 1) {
             return null;
         } else {
             $user = $res->getRows()[0];
             $user->setIdentifier($user->getIdUser());
+
             return $user;
         }
     }
