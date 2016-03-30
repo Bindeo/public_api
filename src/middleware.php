@@ -2,6 +2,8 @@
 // Application middleware
 // OAuth2
 if ($app->getContainer()->request->getUri()->getPath() != '/access_token') {
+    // Secure routes
+    $app->add(new PublicApi\Middleware\Security());
     // Save OAuth data in registry
     $app->add(new PublicApi\Middleware\OAuth());
     // Check OAuth authorization

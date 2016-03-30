@@ -25,7 +25,8 @@ class OAuth
                          : OAuthRegistry::GRANT_CREDENTIALS)
                      ->setClientId($request->getAttribute('oauth_client_id'))
                      ->setClientRole($request->getAttribute('oauth_scopes')[0])
-                     ->setUserId($request->getAttribute('oauth_user_id'));
+                     ->setUserId($request->getAttribute('oauth_scopes')[0] != 'anonymous'
+                         ? $request->getAttribute('oauth_user_id') : null);
 
         return $next($request, $response);
     }
