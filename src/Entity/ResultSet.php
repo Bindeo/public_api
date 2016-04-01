@@ -61,6 +61,17 @@ class ResultSet extends ClientResultSetAbstract
                 $object = new User((array)$data->attributes);
                 $res = [$object->getIdUser(), $object];
                 break;
+            case 'user_identities':
+                // Fill the entity class
+                if (!$this->entity) {
+                    $this->entity = 'PublicApi\Entity\UserIdentity';
+                } elseif ($this->entity != 'PublicApi\Entity\UserIdentity') {
+                    throw new \Exception(500);
+                }
+
+                $object = new UserIdentity((array)$data->attributes);
+                $res = [$object->getIdIdentity(), $object];
+                break;
             case 'oauth_clients':
                 // Fill the entity class
                 if (!$this->entity) {
