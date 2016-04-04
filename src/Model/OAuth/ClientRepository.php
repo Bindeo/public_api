@@ -4,6 +4,7 @@ namespace PublicApi\Model\OAuth;
 
 use Bindeo\Util\ApiConnection;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use PublicApi\Entity\OAuthClient;
 
 class ClientRepository implements ClientRepositoryInterface
 {
@@ -31,8 +32,22 @@ class ClientRepository implements ClientRepositoryInterface
         if ($res->getError() or !$res->getNumRows() == 1) {
             return null;
         } else {
+            /**
+             * @var $client OAuthClient
+             */
             $client = $res->getRows()[0];
             $client->setIdentifier($client->getIdClient());
+
+            // Check valid IP for restringed clients
+            if ($client->getAllowedIps()) {
+                $ips = explode(' ', $client->getAllowedIps());
+                $clientIp = OAuthRegistry::getInstance()->getIp();
+
+                if ($clientIp != '127.0.0.1' and !in_array($clientIp, $ips)) {
+                    return null;
+                }
+            }
+
             return $client;
         }
     }

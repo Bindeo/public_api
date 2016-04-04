@@ -4,8 +4,10 @@ namespace PublicApi\Model\OAuth;
 
 use Bindeo\DataModel\DataModelAbstract;
 use Bindeo\Util\ApiConnection;
+use League\OAuth2\Server\Entities\AccessTokenEntity;
 use League\OAuth2\Server\Entities\Interfaces\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use PublicApi\Entity\OAuthToken;
 
 class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {
@@ -70,9 +72,28 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
             $res = $this->api->getJson('oauth_token', ['token' => $tokenId]);
             if ($res->getNumRows() == 1) {
                 $revoked = false;
+
+                /** @var OAuthToken $oauthToken */
+                $oauthToken = $res->getRows()[0];
+
+                // Build the Access Token again
+                $token = new AccessTokenEntity();
+                $token->setIdentifier($oauthToken->getToken());
+                $token->setExpiryDateTime($oauthToken->getExpiration());
+                $token->setUserIdentifier($oauthToken->getIdUser() ? $oauthToken->getIdUser() : $oauthToken->getIdClient());
+
+                // Get the client
+                $res = $this->api->getJson('oauth_clients', ['idClient' => $oauthToken->getIdClient()]);
+                if ($res->getError() or !$res->getNumRows() == 1) {
+                    return true;
+                } else {
+                    $token->setClient($res->getRows()[0]);
+                    $token->getClient()->setIdentifier($token->getClient()->getIdClient());
+                }
+
                 // Store it in cache
-                apc_store($tokenId, $tokenId,
-                    $res->getRows()[0]->getExpiration()->format('U') - (new \DateTime())->format('U'));
+                apc_store($tokenId, $token,
+                    $token->getExpiryDateTime()->format('U') - (new \DateTime())->format('U'));
             }
         }
 

@@ -23,12 +23,12 @@ class Security
         // Define scopes hierarchy
         $scopes = [
             'anonymous' => [],
-            'basic'     => [
+            'factum'    => [
                 'anonymous'
             ],
             'all'       => [
                 'anonymous',
-                'basic'
+                'factum'
             ]
         ];
 

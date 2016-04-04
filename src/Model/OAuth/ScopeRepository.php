@@ -25,7 +25,7 @@ class ScopeRepository implements ScopeRepositoryInterface
      */
     public function getScopeEntityByIdentifier($identifier)
     {
-        if ($identifier == 'all' or $identifier == 'anonymous') {
+        if (in_array($identifier, ['all', 'anonymous', 'factum'])) {
             $scope = new ScopeEntity();
             $scope->setIdentifier($identifier);
 
@@ -53,7 +53,7 @@ class ScopeRepository implements ScopeRepositoryInterface
         // Set default scope
         if (count($scopes) == 0) {
             $scope = new ScopeEntity();
-            $scope->setIdentifier($userIdentifier ? $clientEntity->getRole() : 'anonymous');
+            $scope->setIdentifier(($clientEntity->getRole() == 'all' and !$userIdentifier) ? 'anonymous' : $clientEntity->getRole());
             $scopes[] = $scope;
         }
 
