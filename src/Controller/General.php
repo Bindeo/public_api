@@ -29,6 +29,10 @@ class General
     {
         $data = $this->api->getJson('general_account_types', ['locale' => $request->getParam('locale')]);
 
+        if ($data->getError()) {
+            throw new \Exception($data->getError()['message'], $data->getError()['code']);
+        }
+
         $res = ['data' => $data->toArray('account_type'), 'total_pages' => 1];
 
         return $response->withJson($res, 200);
@@ -48,6 +52,10 @@ class General
     {
         $data = $this->api->getJson('general_file_types', ['locale' => $request->getParam('locale')]);
 
+        if ($data->getError()) {
+            throw new \Exception($data->getError()['message'], $data->getError()['code']);
+        }
+
         $res = ['data' => $data->toArray('file_type'), 'total_pages' => 1];
 
         return $response->withJson($res, 200);
@@ -66,6 +74,10 @@ class General
     public function mediaTypes(Request $request, Response $response, $args)
     {
         $data = $this->api->getJson('general_media_types', ['locale' => $request->getParam('locale')]);
+
+        if ($data->getError()) {
+            throw new \Exception($data->getError()['message'], $data->getError()['code']);
+        }
 
         $res = ['data' => $data->toArray('media_type'), 'total_pages' => 1];
 
