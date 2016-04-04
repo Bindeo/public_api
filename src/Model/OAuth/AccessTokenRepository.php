@@ -105,7 +105,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
 
             // Check valid IP for restringed clients
             if ($data->getClient()->getAllowedIps()) {
-                $ips = explode(' ', $data->getClient()->getAllowedIps());
+                $ips = explode(',', $data->getClient()->getAllowedIps());
                 $clientIp = OAuthRegistry::getInstance()->getIp();
 
                 if ($clientIp != '127.0.0.1' and !in_array($clientIp, $ips)) {

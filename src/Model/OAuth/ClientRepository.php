@@ -40,7 +40,7 @@ class ClientRepository implements ClientRepositoryInterface
 
             // Check valid IP for restringed clients
             if ($client->getAllowedIps()) {
-                $ips = explode(' ', $client->getAllowedIps());
+                $ips = explode(',', $client->getAllowedIps());
                 $clientIp = OAuthRegistry::getInstance()->getIp();
 
                 if ($clientIp != '127.0.0.1' and !in_array($clientIp, $ips)) {
