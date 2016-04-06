@@ -23,11 +23,13 @@ class Security
         // Define scopes hierarchy
         $scopes = [
             'anonymous' => [],
+            'advanced' => 'anonymous',
             'factum'    => [
                 'anonymous'
             ],
             'all'       => [
                 'anonymous',
+                'advanced',
                 'factum'
             ]
         ];
@@ -84,6 +86,14 @@ class Security
                 ],
                 'PUT' => [
                     'all'
+                ]
+            ],
+            '/advanced/blockchain'    => [
+                'POST' => [
+                    'advanced'
+                ],
+                'GET' => [
+                    'advanced'
                 ]
             ]
         ];

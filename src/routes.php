@@ -22,3 +22,9 @@ $app->group('/account', function () {
     $this->get('/identities', 'PublicApi\Controller\Accounts:getIdentities');
     $this->put('/identities', 'PublicApi\Controller\Accounts:saveIdentity');
 });
+
+// Direct access to blockchain
+$app->group('/advanced/blockchain', function () {
+    $this->post('', 'PublicApi\Controller\StoreData:postBlockchainData');
+    $this->get('', 'PublicApi\Controller\StoreData:getBlockchainData');
+});

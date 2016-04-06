@@ -25,7 +25,7 @@ class ScopeRepository implements ScopeRepositoryInterface
      */
     public function getScopeEntityByIdentifier($identifier)
     {
-        if (in_array($identifier, ['all', 'anonymous', 'factum'])) {
+        if (in_array($identifier, ['all', 'anonymous', 'advanced', 'factum'])) {
             $scope = new ScopeEntity();
             $scope->setIdentifier($identifier);
 

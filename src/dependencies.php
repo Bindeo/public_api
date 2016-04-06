@@ -63,3 +63,7 @@ $container['PublicApi\Controller\General'] = function (Slim\Container $c) {
 $container['PublicApi\Controller\Accounts'] = function (Slim\Container $c) {
     return new PublicApi\Controller\Accounts($c->get('Bindeo\Util\ApiConnection'));
 };
+
+$container['PublicApi\Controller\StoreData'] = function (Slim\Container $c) {
+    return new PublicApi\Controller\StoreData($c->get('Bindeo\Util\ApiConnection'));
+};
