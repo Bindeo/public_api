@@ -23,13 +23,20 @@ class Security
         // Define scopes hierarchy
         $scopes = [
             'anonymous' => [],
-            'advanced' => 'anonymous',
-            'factum'    => [
+            'advanced'  => [
                 'anonymous'
+            ],
+            'bulk'      => [
+                'anonymous'
+            ],
+            'factum'    => [
+                'anonymous',
+                'bulk'
             ],
             'all'       => [
                 'anonymous',
                 'advanced',
+                'bulk',
                 'factum'
             ]
         ];
@@ -88,22 +95,42 @@ class Security
                     'all'
                 ]
             ],
-            '/advanced/blockchain'    => [
+            '/advanced/blockchain'   => [
                 'POST' => [
                     'advanced'
                 ],
-                'GET' => [
+                'GET'  => [
                     'advanced'
+                ]
+            ],
+            '/bulk/%'                => [
+                'POST' => [
+                    'bulk'
+                ],
+                'GET'  => [
+                    'bulk'
                 ]
             ]
         ];
 
         // Check if request has enough privileges
         if (isset($security[$request->getUri()->getPath()][$request->getOriginalMethod()])) {
-            if (in_array(OAuthRegistry::getInstance()->getClientRole(),
-                    $security[$request->getUri()->getPath()][$request->getOriginalMethod()]) or
-                array_intersect($scopes[OAuthRegistry::getInstance()->getClientRole()],
-                    $security[$request->getUri()->getPath()][$request->getOriginalMethod()])
+            // Direct url
+            $registry = $security[$request->getUri()->getPath()][$request->getOriginalMethod()];
+        } else {
+            // Try to find a wildcard url
+            $parts = explode('/', $request->getUri()->getPath());
+            if (isset($security['/' . $parts[1] . '/%'][$request->getOriginalMethod()])) {
+                $registry = $security['/' . $parts[1] . '/%'][$request->getOriginalMethod()];
+            } else {
+                $registry = null;
+            }
+        }
+
+        // Look for privileges
+        if (is_array($registry)) {
+            if (in_array(OAuthRegistry::getInstance()->getClientRole(), $registry) or
+                array_intersect($scopes[OAuthRegistry::getInstance()->getClientRole()], $registry)
             ) {
                 return $next($request, $response);
             }

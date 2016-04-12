@@ -28,3 +28,14 @@ $app->group('/advanced/blockchain', function () {
     $this->post('', 'PublicApi\Controller\StoreData:postBlockchainData');
     $this->get('', 'PublicApi\Controller\StoreData:getBlockchainData');
 });
+
+// Bulk transaction routes
+$app->group('/bulk', function () {
+    $this->post('', 'PublicApi\Controller\BulkTransactions:createBulk');
+    $this->get('/verify', 'PublicApi\Controller\BulkTransactions:verifyFile');
+    $this->get('/types', 'PublicApi\Controller\BulkTransactions:bulkTypes');
+    $this->put('/{id}', 'PublicApi\Controller\BulkTransactions:closeBulk');
+    $this->delete('/{id}', 'PublicApi\Controller\BulkTransactions:deleteBulk');
+    $this->post('/{id}', 'PublicApi\Controller\BulkTransactions:addItem');
+    $this->get('/{id}', 'PublicApi\Controller\BulkTransactions:getBulk');
+});

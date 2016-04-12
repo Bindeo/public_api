@@ -51,6 +51,11 @@ $container['PublicApi\Middleware\OAuth'] = function (Slim\Container $c) {
     return new \League\OAuth2\Server\Middleware\ResourceServerMiddleware($c->get('PublicApi\Model\OAuth\Server'));
 };
 
+// Models
+$container['PublicApi\Model\BulkTransactions'] = function (Slim\Container $c) {
+    return new PublicApi\Model\BulkTransactions($c->get('Bindeo\Util\ApiConnection'));
+};
+
 // Controllers
 $container['PublicApi\Controller\OAuth'] = function (Slim\Container $c) {
     return new PublicApi\Controller\OAuth($c->get('PublicApi\Model\OAuth\Server'));
@@ -66,4 +71,8 @@ $container['PublicApi\Controller\Accounts'] = function (Slim\Container $c) {
 
 $container['PublicApi\Controller\StoreData'] = function (Slim\Container $c) {
     return new PublicApi\Controller\StoreData($c->get('Bindeo\Util\ApiConnection'));
+};
+
+$container['PublicApi\Controller\BulkTransactions'] = function (Slim\Container $c) {
+    return new PublicApi\Controller\BulkTransactions($c->get('PublicApi\Model\BulkTransactions'));
 };

@@ -94,6 +94,28 @@ class ResultSet extends ClientResultSetAbstract
                 $object = new OAuthToken((array)$data->attributes);
                 $res = [$object->getToken(), $object];
                 break;
+            case 'bulk_transaction':
+                // Fill the entity class
+                if (!$this->entity) {
+                    $this->entity = 'PublicApi\Entity\BulkTransaction';
+                } elseif ($this->entity != 'PublicApi\Entity\BulkTransaction') {
+                    throw new \Exception(500);
+                }
+
+                $object = new BulkTransaction((array)$data->attributes);
+                $res = [$object->getIdBulkTransaction(), $object];
+                break;
+            case 'bulk_type':
+                // Fill the entity class
+                if (!$this->entity) {
+                    $this->entity = 'PublicApi\Entity\BulkType';
+                } elseif ($this->entity != 'PublicApi\Entity\BulkType') {
+                    throw new \Exception(500);
+                }
+
+                $object = new BulkType((array)$data->attributes);
+                $res = [$object->getType(), $object];
+                break;
             default:
                 throw new \Exception(500);
         }
