@@ -109,6 +109,12 @@ class Security
                 ],
                 'GET'  => [
                     'bulk'
+                ],
+                'PUT' => [
+                    'bulk'
+                ],
+                'DELETE'  => [
+                    'bulk'
                 ]
             ]
         ];

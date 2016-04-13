@@ -25,7 +25,7 @@ class ScopeRepository implements ScopeRepositoryInterface
      */
     public function getScopeEntityByIdentifier($identifier)
     {
-        if (in_array($identifier, ['all', 'anonymous', 'advanced', 'factum'])) {
+        if (in_array($identifier, ['all', 'anonymous', 'advanced', 'factum', 'client_credentials', 'password'])) {
             $scope = new ScopeEntity();
             $scope->setIdentifier($identifier);
 
@@ -54,6 +54,11 @@ class ScopeRepository implements ScopeRepositoryInterface
         if (count($scopes) == 0) {
             $scope = new ScopeEntity();
             $scope->setIdentifier(($clientEntity->getRole() == 'all' and !$userIdentifier) ? 'anonymous' : $clientEntity->getRole());
+            $scopes[] = $scope;
+
+            // Add grant type as scope
+            $scope = new ScopeEntity();
+            $scope->setIdentifier($grantType);
             $scopes[] = $scope;
         }
 

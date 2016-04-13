@@ -42,16 +42,17 @@ class Server
         $server = new \League\OAuth2\Server\Server($this->clientRepository, $this->tokenRepository,
             $this->scopeRepository, $this->keys['private'], $this->keys['public']);
 
+        $time = ENV == 'development' ? new \DateInterval('PT12H') : new \DateInterval('PT1H');
+
         // Enable the password grant on the server with an access token TTL of 1 hour
         $server->enableGrantType(new \League\OAuth2\Server\Grant\PasswordGrant($this->userRepository,
-            $this->refreshRepository), new \DateInterval('PT1H'));
+            $this->refreshRepository), $time);
 
         // Enable the client credentials grant on the server with a token TTL of 1 hour
-        $server->enableGrantType(new \League\OAuth2\Server\Grant\ClientCredentialsGrant(), new \DateInterval('PT1H'));
+        $server->enableGrantType(new \League\OAuth2\Server\Grant\ClientCredentialsGrant(), $time);
 
         // Enable the refresh token grant on the server with a token TTL of 1 hour
-        $server->enableGrantType(new \League\OAuth2\Server\Grant\RefreshTokenGrant($this->refreshRepository),
-            new \DateInterval('PT1H'));
+        $server->enableGrantType(new \League\OAuth2\Server\Grant\RefreshTokenGrant($this->refreshRepository), $time);
 
         return $server;
     }

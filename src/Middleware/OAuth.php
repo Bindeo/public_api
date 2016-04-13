@@ -19,10 +19,13 @@ class OAuth
      */
     public function __invoke(Request $request, Response $response, callable $next)
     {
+        $scopes = $request->getAttribute('oauth_scopes');
+
         OAuthRegistry::getInstance()
                      ->setToken($request->getAttribute('oauth_access_token_id'))
-                     ->setGrantType($request->getAttribute('oauth_user_id') ? OAuthRegistry::GRANT_PASSWORD
-                         : OAuthRegistry::GRANT_CREDENTIALS)
+                     ->setGrantType(isset($scopes[1]) and
+                                    $scopes[1] == OAuthRegistry::GRANT_CREDENTIALS ? OAuthRegistry::GRANT_CREDENTIALS
+                                        : OAuthRegistry::GRANT_PASSWORD)
                      ->setClientId($request->getAttribute('oauth_client_id'))
                      ->setClientRole($request->getAttribute('oauth_scopes')[0])
                      ->setUserId($request->getAttribute('oauth_scopes')[0] != 'anonymous'
