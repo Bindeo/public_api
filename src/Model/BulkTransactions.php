@@ -38,6 +38,17 @@ class BulkTransactions
             throw new \Exception($result->getError()['message'], $result->getError()['code']);
         }
 
+        // Translate elements type
+        if ($result->getNumRows() > 0) {
+            foreach ($result->getRows() as $row) {
+                if ($row->getElementsType() == 'E') {
+                    $row->setElementsType('Events');
+                } elseif ($row->getElementsType() == 'F') {
+                    $row->setElementsType('Files');
+                }
+            }
+        }
+
         return $result;
     }
 
