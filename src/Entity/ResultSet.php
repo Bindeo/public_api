@@ -28,17 +28,6 @@ class ResultSet extends ClientResultSetAbstract
                 $object = new AccountType((array)$data->attributes);
                 $res = [$object->getIdType(), $object];
                 break;
-            case 'file_type':
-                // Fill the entity class
-                if (!$this->entity) {
-                    $this->entity = 'PublicApi\Entity\FileType';
-                } elseif ($this->entity != 'PublicApi\Entity\FileType') {
-                    throw new \Exception(500);
-                }
-
-                $object = new FileType((array)$data->attributes);
-                $res = [$object->getIdType(), $object];
-                break;
             case 'media_type':
                 // Fill the entity class
                 if (!$this->entity) {
