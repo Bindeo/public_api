@@ -105,6 +105,17 @@ class ResultSet extends ClientResultSetAbstract
                 $object = new BulkType((array)$data->attributes);
                 $res = [$object->getType(), $object];
                 break;
+            case 'files':
+                // Fill the entity class
+                if (!$this->entity) {
+                    $this->entity = 'PublicApi\Entity\File';
+                } elseif ($this->entity != 'PublicApi\Entity\File') {
+                    throw new \Exception(500);
+                }
+
+                $object = new File((array)$data->attributes);
+                $res = [$object->getIdFile(), $object];
+                break;
             default:
                 throw new \Exception(500);
         }
