@@ -26,7 +26,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
     {
         // Save token in cache
-        apc_store($refreshTokenEntity->getIdentifier(), $refreshTokenEntity,
+        apcu_store($refreshTokenEntity->getIdentifier(), $refreshTokenEntity,
             $refreshTokenEntity->getExpiryDateTime()->format('U') - (new \DateTime())->format('U'));
 
         // Save token in database
@@ -47,8 +47,8 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     public function revokeRefreshToken($tokenId)
     {
         // Delete from cache
-        if (apc_exists($tokenId)) {
-            apc_delete($tokenId);
+        if (apcu_exists($tokenId)) {
+            apcu_delete($tokenId);
         }
 
         // Expire in database
@@ -65,7 +65,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     public function isRefreshTokenRevoked($tokenId)
     {
         // Check in cache
-        $revoked = !apc_exists($tokenId);
+        $revoked = !apcu_exists($tokenId);
 
         if ($revoked) {
             // If it isn't in cache, we look for it in database
@@ -92,7 +92,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
                 }
 
                 // Store it in cache
-                apc_store($tokenId, $token,
+                apcu_store($tokenId, $token,
                     $token->getExpiryDateTime()->format('U') - (new \DateTime())->format('U'));
             }
         }

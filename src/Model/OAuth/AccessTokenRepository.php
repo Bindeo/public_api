@@ -27,7 +27,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
         // Save token in cache
-        apc_store($accessTokenEntity->getIdentifier(), $accessTokenEntity,
+        apcu_store($accessTokenEntity->getIdentifier(), $accessTokenEntity,
             $accessTokenEntity->getExpiryDateTime()->format('U') - (new \DateTime())->format('U'));
 
         // Save token in database
@@ -49,8 +49,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     public function revokeAccessToken($tokenId)
     {
         // Delete from cache
-        if (apc_exists($tokenId)) {
-            apc_delete($tokenId);
+        if (apcu_exists($tokenId)) {
+            apcu_delete($tokenId);
         }
 
         // Expire in database
@@ -67,7 +67,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     public function isAccessTokenRevoked($tokenId)
     {
         // Check in cache
-        $revoked = !apc_exists($tokenId);
+        $revoked = !apcu_exists($tokenId);
 
         if ($revoked) {
             // If it isn't in cache, we look for it in database
@@ -94,14 +94,14 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
                 }
 
                 // Store it in cache
-                apc_store($tokenId, $token,
+                apcu_store($tokenId, $token,
                     $token->getExpiryDateTime()->format('U') - (new \DateTime())->format('U'));
             }
         }
 
         // Check allowed ip
         if (!$revoked) {
-            $data = apc_fetch($tokenId);
+            $data = apcu_fetch($tokenId);
 
             // Check valid IP for restringed clients
             if ($data->getClient()->getAllowedIps()) {
